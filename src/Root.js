@@ -18,23 +18,53 @@ export default class Root extends Component {
                   </label>
                 </div>
               </td>
-              <td><button type="button" className="btn btn-outline-success">Success</button></td>
-              <td><button type="button" className="btn btn-outline-danger">Danger</button></td>
-              <td><button type="button" className="btn btn-light">操作</button></td>
+              <td>
+                <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label className="btn btn btn-outline-success">
+                    <input type="radio" />R8
+                  </label>
+                  <label className="btn btn btn-outline-success">
+                    <input type="radio" />毒瓶珠
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label className="btn btn btn-outline-danger">
+                    <input type="radio" />R8
+                  </label>
+                  <label className="btn btn btn-outline-danger">
+                    <input type="radio" />攻击珠
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div className="dropdown show">
+                  <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作</a>
+
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a className="dropdown-item" href="#">设置为连续跳过节点</a>
+                    <a className="dropdown-item" href="#">编辑珠子</a>
+                    <a className="dropdown-item" href="#">设置为未跳过</a>
+                  </div>
+                </div>
+              </td>
             </tr>
+
             <tr>
-              <th scope="row"><input className="form-check-input" type="checkbox" value="" /></th>
-              <td>Jacob</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td><button type="button" className="btn btn-light">操作</button></td>
-            </tr>
-            <tr>
-              <th scope="row"><input className="form-check-input" type="checkbox" value="" /></th>
-              <td>Larry</td>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td><button type="button" className="btn btn-light">操作</button></td>
+              <th scope="row"></th>
+              <td>
+                <button type="button" className="btn btn-dark">添加珠子</button>
+              </td>
+              <td>
+                <button type="button" className="btn btn-dark">添加珠子</button>
+              </td>
+              <td>
+                <button type="button" className="btn btn-dark">添加珠子</button>
+              </td>
+              <td>
+
+              </td>
             </tr>
           </tbody>
         </table>
