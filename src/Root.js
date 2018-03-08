@@ -11,39 +11,13 @@ export default class Root extends Component {
   }
 
   componentDidMount() {
-    let db
-    var request = indexedDB.open('books', 1);
-
-    request.onupgradeneeded = function (e) {
-      // console.log('upgrading...');
-      // var db = request.result;
-      // var store = db.createObjectStore("books", { keyPath: "isbn" });
-      // var titleIndex = store.createIndex("by_title", "title", { unique: true });
-      // var authorIndex = store.createIndex("by_author", "author")
+    let storage = window.localStorage
+    let json = storage.getItem("alchemy")
+    if (json) {
+      this.setState({
+        dblist: JSON.parse(json)
+      })
     }
-
-    request.onsuccess = function (e) {
-      console.log('success');
-      db = e.target.result;
-    }
-
-    request.onerror = function (e) {
-      console.log('error');
-      console.dir(e);
-    }
-
-    document.getElementById('addDB').addEventListener('click', function () {
-      console.log('add store');
-      var tx = db.transaction("books", "readwrite");
-      var store = tx.objectStore("books");
-      // 添加 store
-      store.put({ title: 'aaa', author: 'bbb', isbn: 'ccc' });
-      tx.complete = function () {
-        console.log('push complete');
-      }
-    })
-
-
   }
 
   render() {
@@ -70,7 +44,7 @@ export default class Root extends Component {
               </li>
             </ul>
 
-            <button className="btn btn-primary my-2 my-sm-0" type="submit">添加珠子</button>
+            <button className="btn btn-primary my-2 my-sm-0" onClick={this.createLayer}>添加珠子</button>
 
           </div>
         </nav>
@@ -132,4 +106,9 @@ export default class Root extends Component {
       </div>
     )
   }
+
+  createLayer = e => {
+    let container = document.createElement('div')
+  }
+
 }
