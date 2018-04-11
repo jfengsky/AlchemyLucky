@@ -3,46 +3,66 @@
 
 import React, { Component } from 'react'
 
+import alchemyList, { getAlchemyName } from './list'
+
+import Edit from './Edit'
+
 export default class Root extends Component {
   constructor(props) {
     super(props)
     this.state = {
       db: null,
       isAdd: false,
+      inputList: []
     }
   }
 
   componentDidMount() {
     let db = this.get()
     this.setState({
-      db
+      db: JSON.parse(db)
     })
   }
 
   render() {
     let {
       db,
-      isAdd
+      isAdd,
+      inputList
     } = this.state
     return (
       <div>
         <div>
-          <button onClick={this.addList}>{isAdd ? '取消': '添加'}炼金组</button>
+          <button onClick={this.addList}>{isAdd ? '取消' : '添加'}炼金组</button>
           <button>任务1次</button>
           <button>炼金1次</button>
         </div>
         {isAdd && <div>
-          <input type="text" ref="item1" />
-          <input type="text" ref="item2" />
-          <input type="text" ref="item3" />
+          <ul>
+          {
+            [0,1,2].map(item => <Edit key={item} valueChange={this.itemChange} data={{type: item, valueId: inputList[item]}} />)
+          }
+          </ul>
           <button onClick={this.addItems}>添加</button>
+          
         </div>}
 
-        <div>
-          <ul>
-            <li></li>
-          </ul>
-        </div>
+        {
+          db && !!db.length && <div>
+            {
+              db.map(({l},index) => {
+                return <ul key={index} className="line">
+                  {
+                    l.map( (item, _index) => {
+                      return <li key={_index} className="fl">{getAlchemyName(item)}</li>
+                    })
+                  }
+                </ul>
+              })
+            }
+          </div>
+        }
+        
       </div>
     )
   }
@@ -51,8 +71,8 @@ export default class Root extends Component {
     return localStorage.getItem("alchemy")
   }
 
-  save = () => {
-
+  save = data => {
+    localStorage.setItem('alchemy', JSON.stringify(data))
   }
 
   addList = e => {
@@ -61,25 +81,45 @@ export default class Root extends Component {
     })
   }
 
+  itemChange = data => {
+    let {
+      id,
+      type
+    } = data
+    let {
+      inputList
+    } = this.state
+    inputList[type] = id
+    this.setState({
+      inputList
+    })
+  }
+
   addItems = e => {
 
     let {
-      db
+      db,
+      inputList
     } = this.state
 
-    const {
-      item1,
-      item2,
-      item3
-    } = this.refs
-
-    if(!db){
+    if (!db) {
       db = []
     }
 
+    // l: list 用来存珠子 d: done 是否完成
+    
     db.push({
-      
+      l: inputList,
+      d: 0
     })
+
+    this.setState({
+      isAdd: false,
+      db,
+      inputList: []
+    })
+
+    this.save(db)
 
   }
 }
