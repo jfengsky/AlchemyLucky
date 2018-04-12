@@ -11,14 +11,16 @@ export default class Root extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      db: null,
+      db: {
+        list: null
+      },
       isAdd: false,
       inputList: []
     }
   }
 
   componentDidMount() {
-    let db = this.get()
+    let db = this.get() || {}
     this.setState({
       db: JSON.parse(db)
     })
@@ -48,15 +50,16 @@ export default class Root extends Component {
         </div>}
 
         {
-          db && !!db.length && <div>
+          db.list && !!db.list.length && <div>
             {
-              db.map(({l},index) => {
+              db.list.map(({l},index) => {
                 return <ul key={index} className="line">
                   {
                     l.map( (item, _index) => {
                       return <li key={_index} className="fl">{getAlchemyName(item)}</li>
                     })
                   }
+                  <button>设置</button>
                 </ul>
               })
             }
@@ -102,13 +105,13 @@ export default class Root extends Component {
       inputList
     } = this.state
 
-    if (!db) {
-      db = []
+    if (!db.list) {
+      db.list = []
     }
 
     // l: list 用来存珠子 d: done 是否完成
     
-    db.push({
+    db.list.push({
       l: inputList,
       d: 0
     })
