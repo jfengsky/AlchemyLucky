@@ -34,10 +34,10 @@ export default class Root extends Component {
     } = this.state
     return (
       <div>
-        <div>
-          <button onClick={this.addList}>{isAdd ? '取消' : '添加'}炼金组</button>
-          <button>任务1次</button>
-          <button>炼金1次</button>
+        <div className="layout">
+          <button onClick={this.addList} className="ivu-btn ivu-btn-primary">{isAdd ? '取消' : '添加'}炼金组</button>
+          <button className="ivu-btn ivu-btn-success">任务1次</button>
+          <button className="ivu-btn ivu-btn-success">炼金1次</button>
         </div>
         {isAdd && <div>
           <ul>
@@ -45,7 +45,7 @@ export default class Root extends Component {
             [0,1,2].map(item => <Edit key={item} valueChange={this.itemChange} data={{type: item, valueId: inputList[item]}} />)
           }
           </ul>
-          <button onClick={this.addItems}>添加</button>
+          <button onClick={this.addItems} className="ivu-btn ivu-btn-success">添加</button>
           
         </div>}
 

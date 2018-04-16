@@ -24,7 +24,7 @@ export default class Edit extends Component {
     } = this.state
 
     return (<li style={{ float: 'left' }}>
-      <input type="text" ref="item1" value={value} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} />
+      <input type="text" ref="item1" className="ivu-input" value={value} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} />
       {
         isFocus && !!inputList.length && <div>
           <dl>
