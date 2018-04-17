@@ -5,7 +5,13 @@ import React, { Component } from 'react'
 
 import alchemyList, { getAlchemyName } from './list'
 
+import Navbar from './Navbar'
+
+import Modal from './Modal'
+
 import Edit from './Edit'
+
+import AlchemyList from './AlchemyList'
 
 export default class Root extends Component {
   constructor(props) {
@@ -14,13 +20,12 @@ export default class Root extends Component {
       db: {
         list: null
       },
-      isAdd: false,
-      inputList: []
+      isAdd: false
     }
   }
 
   componentDidMount() {
-    let db = this.get() || {}
+    let db = this.get() || "{}"
     this.setState({
       db: JSON.parse(db)
     })
@@ -29,43 +34,15 @@ export default class Root extends Component {
   render() {
     let {
       db,
-      isAdd,
-      inputList
+      isAdd
     } = this.state
     return (
-      <div>
-        <div className="layout">
-          <button onClick={this.addList} className="ivu-btn ivu-btn-primary">{isAdd ? '取消' : '添加'}炼金组</button>
-          <button className="ivu-btn ivu-btn-success">任务1次</button>
-          <button className="ivu-btn ivu-btn-success">炼金1次</button>
-        </div>
-        {isAdd && <div>
-          <ul>
-          {
-            [0,1,2].map(item => <Edit key={item} valueChange={this.itemChange} data={{type: item, valueId: inputList[item]}} />)
-          }
-          </ul>
-          <button onClick={this.addItems} className="ivu-btn ivu-btn-success">添加</button>
-          
-        </div>}
+      <div className="container-fluid">
+        <Navbar handlers={{showLayer: this.showLayer}} />
 
-        {
-          db.list && !!db.list.length && <div>
-            {
-              db.list.map(({l},index) => {
-                return <ul key={index} className="line">
-                  {
-                    l.map( (item, _index) => {
-                      return <li key={_index} className="fl">{getAlchemyName(item)}</li>
-                    })
-                  }
-                  <button>设置</button>
-                </ul>
-              })
-            }
-          </div>
-        }
+        <AlchemyList />
         
+        { isAdd && <Modal handlers={{ closeLayer: this.closeLayer}} /> }
       </div>
     )
   }
@@ -78,6 +55,7 @@ export default class Root extends Component {
     localStorage.setItem('alchemy', JSON.stringify(data))
   }
 
+  /*
   addList = e => {
     this.setState({
       isAdd: !this.state.isAdd
@@ -124,5 +102,17 @@ export default class Root extends Component {
 
     this.save(db)
 
+  }
+  */
+  showLayer = e => {
+    this.setState({
+      isAdd: true
+    })
+  }
+
+  closeLayer = e => {
+    this.setState({
+      isAdd: false
+    })
   }
 }
