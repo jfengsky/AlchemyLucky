@@ -40,7 +40,7 @@ export default class Root extends Component {
       <div className="container-fluid">
         <Navbar handlers={{showLayer: this.showLayer}} />
 
-        <AlchemyList />
+        <AlchemyList db={db} />
         
         { isAdd && <Modal handlers={{ closeLayer: this.closeLayer}} /> }
       </div>

@@ -10,9 +10,11 @@ export default class Edit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
+      values: [],
       inputList: [],
-      isFocus: false
+      focusIndex: null,
+      isFocus: false,
+      bak: ''
     }
   }
   render() {
@@ -20,54 +22,48 @@ export default class Edit extends Component {
     let {
       inputList,
       isFocus,
-      value
+      values,
+      focusIndex,
+      bak
     } = this.state
 
     return (
       <div className="modal-body">
         <div className="form-row">
           {
-            [1, 2, 3].map(item => {
+            [0, 1, 2].map(item => {
               return (
                 <div className="col" key={item}>
-                  <input type="text" className="form-control" placeholder={`添加珠子${item}`} />
+                  <input type="text" defaultValue={values[item] ? values[item].name : ''} className="form-control" onFocus={this.handleFocus.bind(this, item)} onChange={this.handleChange} placeholder={`添加珠子${item + 1}`} />
                 </div>
               )
             })
           }
           <div className="col">
-            <input type="text" className="form-control" placeholder="添加备注" />
+            <input type="text" className="form-control" onChange={this.bakChange} defaultValue={bak} placeholder="添加备注" />
           </div>
         </div>
         <ul className="itemlist">
-          <li>攻击珠</li>
-          <li>毒瓶珠</li>
-          <li>攻击珠</li>
-          <li>毒瓶珠</li>
-          <li>攻击珠</li>
-          <li>毒瓶珠</li>
-          <li>攻击珠</li>
-          <li>毒瓶珠</li>
+          {
+            isFocus && !!inputList.length && <div>
+              <dl>
+                {
+                  inputList.map(item => {
+                    return <li key={item.id} onClick={this.handleClick.bind(this, item)}>{item.name}</li>
+                  })
+                }
+              </dl>
+            </div>
+          }
         </ul>
       </div>
     )
-    /*
-    return (<li style={{ float: 'left' }}>
-      <input type="text" ref="item1" className="ivu-input" value={value} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} />
-      {
-        isFocus && !!inputList.length && <div>
-          <dl>
-            {
-              inputList.map(item => {
-                return <dd key={item.id} onClick={this.handleClick.bind(this, item)}>{item.name}</dd>
-              })
-            }
-          </dl>
-        </div>
-      }
-    </li>)
-    */
   }
+
+  bakChange = e => {
+    console.log(e.target.value)
+  }
+
   handleChange = e => {
     let value = e.target.value.trim()
     let tempList = []
@@ -90,32 +86,36 @@ export default class Edit extends Component {
 
   }
 
-  handleBlur = e => {
-    // this.setState({
-    //   isFocus: false
-    // })
-  }
-
-  handleFocus = e => {
+  handleFocus = data => {
     this.setState({
-      isFocus: true
+      isFocus: true,
+      focusIndex: data
     })
   }
 
   handleClick = _data => {
 
     let {
-      data,
       valueChange
-    } = this.props
+    } = this.props.handlers
+
+    let {
+      focusIndex,
+      values
+    } = this.state
+
+    values[focusIndex] = {
+      ..._data,
+      index: focusIndex
+    }
 
     this.setState({
-      value: _data.name,
-      isFocus: false
+      values,
+      isFocus: false,
+      focusIndex: null
     }, () => {
-      this.props.valueChange({
-        ..._data,
-        type: data.type
+      valueChange({
+        values
       })
     })
   }

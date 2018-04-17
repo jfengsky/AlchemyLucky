@@ -17,7 +17,7 @@ export default class Navbar extends Component {
                 <span>&times;</span>
               </button>
             </div>
-            <Edit />
+            <Edit handlers={{valueChange: this.valueChange}} />
             <div className="modal-footer">
               <button type="button" className="btn btn-primary" onClick={this.save}>保存</button>
               <button type="button" className="btn btn-secondary" onClick={closeLayer}>关闭</button>
@@ -30,5 +30,9 @@ export default class Navbar extends Component {
 
   save = e => {
     this.props.handlers.closeLayer()
+  }
+
+  valueChange = data => {
+    debugger
   }
 }
