@@ -1,0 +1,45 @@
+{
+  "name": "alchemylucky",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clear": "rm -rf dist/*.*",
+    "tsc": "npm run clear && tsc",
+    "tscw": "tsc --watch",
+    "client": "node-dev dist/client.js",
+    "watch": "webpack --progress --colors --watch --mode development",
+    "watch:client": "webpack --config webpack.config.client.js --progress --colors --watch --mode development",
+    "pushpkg": "git add -A && git commit -m auto-pkg && git push origin master",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfengsky/AlchemyLucky.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jfengsky/AlchemyLucky/issues"
+  },
+  "homepage": "https://github.com/jfengsky/AlchemyLucky#readme",
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/react": "^16.3.11",
+    "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^5.0.16",
+    "awesome-typescript-loader": "^5.0.0",
+    "express": "^4.16.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.20.3",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.1",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
