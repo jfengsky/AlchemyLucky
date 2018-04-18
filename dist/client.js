@@ -87,7 +87,48 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var express = __webpack_require__(/*! express */ "express");
+var layout_1 = __webpack_require__(/*! ../views/layout */ "./ts/views/layout.tsx");
+var clientPort = 4100;
+var app = express();
+app.use(express.static('./dist'));
+app.use(express.static('./public'));
+app.get('*', function (req, res) {
+    var clientProp = {
+        title: 'client',
+        content: '',
+        __INITSTATE__: {}
+    };
+    res.send(layout_1.layout(clientProp));
+});
+app.listen(clientPort, function () { return console.log("start client: http://localhost:" + clientPort); });
 
+
+/***/ }),
+
+/***/ "./ts/views/layout.tsx":
+/*!*****************************!*\
+  !*** ./ts/views/layout.tsx ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.layout = function (props) { return "\n  <html>\n    <head>\n      <meta charset=\"utf-8\">\n      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n      <title>" + props.title + "</title>\n      <link rel=\"stylesheet\" href=\"https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n    </head>\n    <body>\n      <div id=\"root\">" + (props.content || '') + "</div>\n      <script src=\"/manifest.js\"></script>\n      <script src=\"/vendor.js\"></script>\n      <script src=\"/index.js\"></script>\n      <script>\n        window.__INITSTATE__ = " + JSON.stringify(props.__INITSTATE__ || {}) + "\n      </script>\n    </body>\n  </html>\n"; };
+
+
+/***/ }),
+
+/***/ "express":
+/*!**************************!*\
+  !*** external "express" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("express");
 
 /***/ })
 

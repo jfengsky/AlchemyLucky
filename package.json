@@ -7,7 +7,7 @@
     "clear": "rm -rf dist/*.*",
     "tsc": "npm run clear && tsc",
     "tscw": "tsc --watch",
-    "client": "node-dev dist/client.js",
+    "client": "node dist/client.js",
     "watch": "webpack --progress --colors --watch --mode development",
     "watch:client": "webpack --config webpack.config.client.js --progress --colors --watch --mode development",
     "pushpkg": "git add -A && git commit -m auto-pkg && git push origin master",
