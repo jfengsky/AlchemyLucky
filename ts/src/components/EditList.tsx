@@ -5,22 +5,21 @@ import { ITAlchemysItem } from '../interfaces'
 
 interface ITProps {
   alchemys: Array<ITAlchemysItem>
+  
+  valueChange: (data: any) => {}
 }
 interface ITState {
-
-  // 当前输入珠子列表
-  values: Array<any>
 
   // 联想珠子列表
   inputList: Array<ITAlchemysItem>
 
   // 当前输入框序号
-  focusIndex: Number
-
+  focusIndex: any
+  
   // 输入框是否获取焦点
   isFocus: Boolean
 
-  // 备注信息
+  values: Array<any>
   bak: string
 }
 
@@ -28,10 +27,10 @@ class EditList extends React.Component<ITProps, ITState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      values: [],
       inputList: [],
       focusIndex: null,
       isFocus: false,
+      values: [],
       bak: ''
     }
   }
@@ -41,8 +40,8 @@ class EditList extends React.Component<ITProps, ITState> {
     let {
       inputList,
       isFocus,
-      values,
       focusIndex,
+      values,
       bak
     } = this.state
 
@@ -53,7 +52,7 @@ class EditList extends React.Component<ITProps, ITState> {
             [0, 1, 2].map(item => {
               return (
                 <div className="col" key={item}>
-                  <input type="text" className="form-control" onFocus={this.handleFocus.bind(this, item)} onChange={this.handleChange} placeholder={`添加珠子${item + 1}`} />
+                  <input type="text" value={values[item] ? values[item].name : ''} className="form-control" onFocus={this.handleFocus.bind(this, item)} onChange={this.handleChange} placeholder={`添加珠子${item + 1}`} />
                 </div>
               )
             })
@@ -67,7 +66,7 @@ class EditList extends React.Component<ITProps, ITState> {
             isFocus && !!inputList.length && <div>
               <dl>
                 {
-                  inputList.map( (item: any):JSX.Element => {
+                  inputList.map((item: any): JSX.Element => {
                     return <li key={item.id} onClick={this.handleClick.bind(this, item)}>{item.name}</li>
                   })
                 }
@@ -79,7 +78,7 @@ class EditList extends React.Component<ITProps, ITState> {
     )
   }
 
-  handleFocus = (data: any) => {
+  handleFocus = (data: Number): void => {
     this.setState({
       isFocus: true,
       focusIndex: data
@@ -107,26 +106,30 @@ class EditList extends React.Component<ITProps, ITState> {
 
   }
 
-  handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  handleClick = (data: ITAlchemysItem): void => {
+
     let {
       focusIndex,
-      values
+      values,
     } = this.state
 
-    // values[focusIndex] = {
-    //   ..._data,
-    //   index: focusIndex
-    // }
+    let {
+      valueChange
+    } = this.props
 
-    // this.setState({
-    //   values,
-    //   isFocus: false,
-    //   focusIndex: null
-    // }, () => {
-    //   valueChange({
-    //     values
-    //   })
-    // })
+    values[focusIndex] = {
+      ...data,
+      index: focusIndex
+    }
+
+    this.setState({
+      isFocus: false,
+      focusIndex: null,
+      inputList: [],
+      values
+    }, () => {
+      valueChange(values)
+    })
 
   }
 

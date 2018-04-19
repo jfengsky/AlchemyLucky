@@ -11,6 +11,23 @@ export const layout = (props:ITLayout): string => `
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title>${props.title}</title>
       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <style>
+        ul,li {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .itemlist{
+          margin-top: 20px
+        }
+        .itemlist li {
+          float: left;
+          width: 1%;
+          line-height: 2;
+          text-align: center;
+          cursor: pointer;
+        }
+      </style>
     </head>
     <body>
       <div id="root">${props.content || ''}</div>

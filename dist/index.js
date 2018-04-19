@@ -76,10 +76,10 @@ exports.createAction = function (name, value) { return ({
 
 /***/ }),
 
-/***/ "./ts/src/components/EditList.tsx":
-/*!****************************************!*\
-  !*** ./ts/src/components/EditList.tsx ***!
-  \****************************************/
+/***/ "./ts/src/components/AlchemyInput.tsx":
+/*!********************************************!*\
+  !*** ./ts/src/components/AlchemyInput.tsx ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -97,81 +97,30 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var EditList = /** @class */ (function (_super) {
-    __extends(EditList, _super);
-    function EditList(props) {
+var AlchemyInput = /** @class */ (function (_super) {
+    __extends(AlchemyInput, _super);
+    function AlchemyInput(props) {
         var _this = _super.call(this, props) || this;
-        _this.handleFocus = function (data) {
-            _this.setState({
-                isFocus: true,
-                focusIndex: data
-            });
-        };
         _this.handleChange = function (e) {
             var value = e.target.value.trim();
-            var tempList = [];
-            if (value) {
-                _this.props.alchemys.map(function (item) {
-                    // 先比较拼音 再比较中文
-                    if (item.py.indexOf(value) >= 0 || item.name.indexOf(value) >= 0) {
-                        tempList.push(item);
-                    }
-                });
-            }
             _this.setState({
-                inputList: tempList,
-                isFocus: true
+                value: value
+            }, function () {
+                _this.props.valueChange({ value: value, index: _this.props.index });
             });
         };
-        _this.handleClick = function (e) {
-            var _a = _this.state, focusIndex = _a.focusIndex, values = _a.values;
-            // values[focusIndex] = {
-            //   ..._data,
-            //   index: focusIndex
-            // }
-            // this.setState({
-            //   values,
-            //   isFocus: false,
-            //   focusIndex: null
-            // }, () => {
-            //   valueChange({
-            //     values
-            //   })
-            // })
-        };
         _this.state = {
-            values: [],
-            inputList: [],
-            focusIndex: null,
-            isFocus: false,
-            bak: ''
+            value: ''
         };
         return _this;
     }
-    EditList.prototype.render = function () {
-        var _this = this;
-        var _a = this.state, inputList = _a.inputList, isFocus = _a.isFocus, values = _a.values, focusIndex = _a.focusIndex, bak = _a.bak;
-        return (React.createElement("div", { className: "modal-body" },
-            React.createElement("div", { className: "form-row" },
-                [0, 1, 2].map(function (item) {
-                    return (React.createElement("div", { className: "col", key: item },
-                        React.createElement("input", { type: "text", className: "form-control", onFocus: _this.handleFocus.bind(_this, item), onChange: _this.handleChange, placeholder: "\u6DFB\u52A0\u73E0\u5B50" + (item + 1) })));
-                }),
-                React.createElement("div", { className: "col" },
-                    React.createElement("input", { type: "text", className: "form-control", placeholder: "\u6DFB\u52A0\u5907\u6CE8" }))),
-            React.createElement("ul", { className: "itemlist" }, isFocus && !!inputList.length && React.createElement("div", null,
-                React.createElement("dl", null, inputList.map(function (item) {
-                    return React.createElement("li", { key: item.id, onClick: _this.handleClick.bind(_this, item) }, item.name);
-                }))))));
+    AlchemyInput.prototype.render = function () {
+        return (React.createElement("div", { className: "col" },
+            React.createElement("input", { type: "text", value: this.state.value, className: "form-control", onChange: this.handleChange })));
     };
-    return EditList;
+    return AlchemyInput;
 }(React.Component));
-var mapStateToProps = function (state) { return ({
-    alchemys: state.alchemys
-}); };
-var mapDispatchToProps = function (dispatch) { return ({}); };
-exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(EditList);
+exports.default = AlchemyInput;
 
 
 /***/ }),
@@ -195,21 +144,69 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var action_1 = __webpack_require__(/*! ../action */ "./ts/src/action/index.ts");
-var EditList_1 = __webpack_require__(/*! ./EditList */ "./ts/src/components/EditList.tsx");
+var AlchemyInput_1 = __webpack_require__(/*! ./AlchemyInput */ "./ts/src/components/AlchemyInput.tsx");
+var getSelectList = function (_a) {
+    var inputText = _a.inputText, alchemys = _a.alchemys;
+    var tempList = [];
+    if (inputText) {
+        alchemys.map(function (item) {
+            // 先比较拼音 再比较中文
+            if (item.py.indexOf(inputText) >= 0 || item.name.indexOf(inputText) >= 0) {
+                tempList.push(item);
+            }
+        });
+    }
+    return tempList;
+};
 var Modal = /** @class */ (function (_super) {
     __extends(Modal, _super);
     function Modal(props) {
         var _this = _super.call(this, props) || this;
+        _this.handleClickSelect = function (data) {
+            console.log(data);
+        };
         _this.handleClickClose = function (e) {
             _this.props.toggleModal();
+        };
+        _this.handleClickSave = function (e) {
+            // console.log(this.state.values)
+        };
+        _this.valueChange = function (_a) {
+            var value = _a.value, index = _a.index;
+            _this.setState({
+                inputText: value,
+                focusIndex: index
+            });
+        };
+        _this.state = {
+            inputText: '',
+            focusIndex: null
         };
         return _this;
     }
     Modal.prototype.render = function () {
+        var _this = this;
+        var inputText = this.state.inputText;
+        var editprops = {
+            valueChange: this.valueChange,
+            index: 0
+        };
+        var selectList = getSelectList({
+            inputText: inputText,
+            alchemys: this.props.alchemys
+        });
         return (React.createElement("div", { className: "modal bd-example-modal-lg", style: { display: 'block' } },
             React.createElement("div", { className: "modal-dialog modal-lg", role: "document" },
                 React.createElement("div", { className: "modal-content" },
@@ -217,14 +214,24 @@ var Modal = /** @class */ (function (_super) {
                         React.createElement("h5", { className: "modal-title" }, "\u6DFB\u52A0\u70BC\u91D1\u7EC4"),
                         React.createElement("button", { type: "button", className: "close", onClick: this.handleClickClose },
                             React.createElement("span", null, "\u00D7"))),
-                    React.createElement(EditList_1.default, null),
+                    React.createElement("div", { className: "modal-body" },
+                        React.createElement("div", { className: "form-row" },
+                            [0, 1, 2].map(function (item) {
+                                editprops.index = item;
+                                return React.createElement(AlchemyInput_1.default, __assign({}, editprops, { key: item }));
+                            }),
+                            React.createElement("div", { className: "col" },
+                                React.createElement("input", { type: "text", className: "form-control", placeholder: "\u6DFB\u52A0\u5907\u6CE8" }))),
+                        React.createElement("ul", { className: "itemlist" }, !!selectList.length && selectList.map(function (item) { return React.createElement("li", { key: item.id, onClick: _this.handleClickSelect.bind(_this, item) }, item.name); }))),
                     React.createElement("div", { className: "modal-footer" },
-                        React.createElement("button", { type: "button", className: "btn btn-primary" }, "\u4FDD\u5B58"),
+                        React.createElement("button", { type: "button", className: "btn btn-primary", onClick: this.handleClickSave }, "\u4FDD\u5B58"),
                         React.createElement("button", { type: "button", className: "btn btn-secondary", onClick: this.handleClickClose }, "\u5173\u95ED"))))));
     };
     return Modal;
 }(React.Component));
-var mapStateToProps = function (state) { return ({}); };
+var mapStateToProps = function (state) { return ({
+    alchemys: state.alchemys
+}); };
 var mapDispatchToProps = function (dispatch) { return ({
     toggleModal: function () {
         dispatch(action_1.createAction(action_1.TOGGLE_MODAL, false));
